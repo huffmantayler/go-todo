@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: todo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: 
+      context: ./proj/backend
+      dockerfile: Dockerfile
+    container_name: go-todo-backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: todo
+    ports:
+      - "8080:8080"
+  frontend:
+    build:
+      context: ./proj/frontend
+      dockerfile: Dockerfile
+    container_name: todo-react-frontend
+    restart: always
+    depends_on:
+      - db
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres_data:
