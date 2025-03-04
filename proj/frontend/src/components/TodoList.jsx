@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { TextField, Button, List, ListItem, ListItemText, IconButton, Paper, Typography } from "@mui/material";
 import Alert from "./Alert";
 import { Delete } from "@mui/icons-material";
@@ -118,12 +118,13 @@ export default function TodoList() {
       <TextField
         fullWidth
         variant="outlined"
-        label="Add a task..."
+        placeholder="Add a task..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && addTodo()}
       />
       <Button 
+        className="addTaskButton"
         sx={{ mt: 2 }} 
         variant="contained" 
         onClick={addTodo} 
@@ -143,12 +144,13 @@ export default function TodoList() {
             }
             {editing && todo.id === editing.id ? 
             <>
-            <TextField defaultValue={todo.title} onChange={(e) => setTodoTitle(e.target.value)}/>
+            <TextField defaultValue={todo.title} data-testid="task-item" onChange={(e) => setTodoTitle(e.target.value)}/>
             <Button style={{marginLeft: "10px"}} variant="contained" onClick={() => updateTodoTitle(todo.id)}>Save</Button>
             </>
             : 
             <>
                 <ListItemText
+                className="deleteTaskButton"
                 primary={todo.title}
                 sx={{ textDecoration: todo.done ? "line-through" : "none" }}
                 onClick={() => setEditing({editing: true, id: todo.id})}

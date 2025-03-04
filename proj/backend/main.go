@@ -44,6 +44,7 @@ type TitleRequest struct {
 }
 
 func main() {
+	getDB()
 	mux := http.NewServeMux()
 
 	c := cors.New(cors.Options{
@@ -66,8 +67,7 @@ func main() {
 }
 
 func handleGetAll(w http.ResponseWriter, r *http.Request) {
-	db := getDB()
-	todos, err := getAllTodos(db)
+	todos, err := getAllTodos()
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		fmt.Println("Error getting all todos")
@@ -111,24 +111,21 @@ func handleUpdate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid 'id' parameter, must be an integer", http.StatusBadRequest)
 		return
 	}
-	db := getDB()
 
-	updateTodo(id, doneStr, title, db)
+	updateTodo(id, doneStr, title)
 	io.WriteString(w, "Todo updated\n")
 }
 
 func handleCreate(w http.ResponseWriter, r *http.Request) {
 	var titleRequest TitleRequest
 	err := json.NewDecoder(r.Body).Decode(&titleRequest)
-	// todo.printTodo()
+
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	db := getDB()
-
-	createTodo(titleRequest.Title, db)
+	createTodo(titleRequest.Title)
 	io.WriteString(w, "Todo created\n")
 }
 
@@ -151,8 +148,7 @@ func handleDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db := getDB()
-	deleteTodo(idToDelete, db)
+	deleteTodo(idToDelete)
 
 	io.WriteString(w, "Todo Deleted\n")
 }
@@ -178,7 +174,7 @@ func closeDB() {
 	}
 }
 
-func createTodo(title string, pool *pgxpool.Pool) error {
+func createTodo(title string) error {
 
 	query := `INSERT INTO todos (title) VALUES ($1) RETURNING id`
 
@@ -193,7 +189,7 @@ func createTodo(title string, pool *pgxpool.Pool) error {
 	return nil
 }
 
-func updateTodo(id int, doneStr string, title string, pool *pgxpool.Pool) error {
+func updateTodo(id int, doneStr string, title string) error {
 	var query string
 	var err error
 
@@ -220,7 +216,7 @@ func updateTodo(id int, doneStr string, title string, pool *pgxpool.Pool) error 
 	return nil
 }
 
-func deleteTodo(id int, pool *pgxpool.Pool) error {
+func deleteTodo(id int) error {
 
 	query := `DELETE FROM todos WHERE id = $1`
 
@@ -233,7 +229,7 @@ func deleteTodo(id int, pool *pgxpool.Pool) error {
 	return nil
 }
 
-func getAllTodos(pool *pgxpool.Pool) ([]Todo, error) {
+func getAllTodos() ([]Todo, error) {
 
 	var todos []Todo
 
