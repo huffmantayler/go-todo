@@ -42,9 +42,9 @@ jobs:
 
       - name: Push images to Docker Hub
         run: |
-          docker push DOCKER_USERNAME/frontend:latest
-          docker push DOCKER_USERNAME/backend:latest
-          # docker push DOCKER_USERNAME/database:latest
+          docker push $DOCKER_USERNAME/frontend:latest
+          docker push $DOCKER_USERNAME/backend:latest
+          # docker push $DOCKER_USERNAME/database:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
