@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "docker-compose.yml, init.sql"
-          target: "/home/${{ secrets.SERVER_USER }}/app
+          target: "/home/${{ secrets.SERVER_USER }}/app"
 
       - name: SSH into Server and Deploy
         uses: appleboy/ssh-action@v0.1.10
