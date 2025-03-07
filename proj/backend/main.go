@@ -76,9 +76,9 @@ func handleGetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, todo := range todos {
-		todo.printTodo()
-	}
+	// for _, todo := range todos {
+	// 	todo.printTodo()
+	// }
 
 	jsonErr := json.NewEncoder(w).Encode(todos)
 	if jsonErr != nil {
