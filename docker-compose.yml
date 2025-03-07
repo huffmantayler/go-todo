@@ -15,10 +15,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    build: 
-      context: ./proj/backend
-      dockerfile: Dockerfile
-    container_name: go-todo-backend
+    # build: 
+    #   context: ./proj/backend
+    #   dockerfile: Dockerfile
+    image: huffmantayler1/backend:latest
     restart: always
     depends_on:
       - db
@@ -31,10 +31,10 @@ services:
     ports:
       - "8080:8080"
   frontend:
-    build:
-      context: ./proj/frontend
-      dockerfile: Dockerfile
-    container_name: todo-react-frontend
+    # build:
+    #   context: ./proj/frontend
+    #   dockerfile: Dockerfile
+    image: huffmantayler1/frontend:latest
     restart: always
     depends_on:
       - db
