@@ -42,6 +42,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -64,6 +65,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            cd /home/${{ sercrets.SERVER_USER }}/app
             docker pull $DOCKER_USERNAME/frontend:latest
             docker pull $DOCKER_USERNAME/backend:latest
             docker compose down
