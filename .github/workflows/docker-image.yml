@@ -34,11 +34,11 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
-      # - name: Build and tag database image
-      #   run: |
-      #     docker build -t $DOCKER_USERNAME/database:latest ./proj/database
-      #   env:
-      #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      - name: Build and tag database image
+        run: |
+          docker build -t $DOCKER_USERNAME/database:latest ./proj/database
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
       - name: Push images to Docker Hub
         run: |
