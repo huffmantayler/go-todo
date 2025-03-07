@@ -18,7 +18,7 @@ services:
     # build: 
     #   context: ./proj/backend
     #   dockerfile: Dockerfile
-    container_name: backend
+    container_name: ${DOCKER_USERNAME}/backend:latest
     restart: always
     depends_on:
       - db
@@ -34,7 +34,7 @@ services:
     # build:
     #   context: ./proj/frontend
     #   dockerfile: Dockerfile
-    container_name: frontend
+    container_name: ${DOCKER_USERNAME}/frontend:latest
     restart: always
     depends_on:
       - db
