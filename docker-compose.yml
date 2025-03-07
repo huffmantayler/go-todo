@@ -18,7 +18,7 @@ services:
     # build: 
     #   context: ./proj/backend
     #   dockerfile: Dockerfile
-    container_name: go-todo-backend
+    container_name: backend
     restart: always
     depends_on:
       - db
@@ -34,7 +34,7 @@ services:
     # build:
     #   context: ./proj/frontend
     #   dockerfile: Dockerfile
-    container_name: todo-react-frontend
+    container_name: frontend
     restart: always
     depends_on:
       - db
