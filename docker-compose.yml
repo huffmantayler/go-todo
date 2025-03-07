@@ -15,9 +15,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    build: 
-      context: ./proj/backend
-      dockerfile: Dockerfile
+    # build: 
+    #   context: ./proj/backend
+    #   dockerfile: Dockerfile
     container_name: go-todo-backend
     restart: always
     depends_on:
@@ -31,9 +31,9 @@ services:
     ports:
       - "8080:8080"
   frontend:
-    build:
-      context: ./proj/frontend
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./proj/frontend
+    #   dockerfile: Dockerfile
     container_name: todo-react-frontend
     restart: always
     depends_on:
