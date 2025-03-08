@@ -22,6 +22,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build and tag nginx image
+        run: |
+          docker build -t $DOCKER_USERNAME/nginx:latest ./proj/
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
       - name: Build and tag frontend image
         run: |
           docker build -t $DOCKER_USERNAME/frontend:latest ./proj/frontend
@@ -38,7 +44,7 @@ jobs:
         run: |
           docker push $DOCKER_USERNAME/frontend:latest
           docker push $DOCKER_USERNAME/backend:latest
-          # docker push $DOCKER_USERNAME/database:latest
+          docker push $DOCKER_USERNAME/nginx:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   deploy:

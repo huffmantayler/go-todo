@@ -16,6 +16,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  nginx:
+    image: huffmantayler1/nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
   backend:
     # build: 
     #   context: ./proj/backend
