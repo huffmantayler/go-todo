@@ -24,11 +24,10 @@ jobs:
 
       - name: Build and tag frontend image
         run: |
-          echo "VITE_BACKEND_URL=http://backend:8080" >> $GITHUB_ENV
+          echo "VITE_BACKEND_URL=http://${{ secrets.SERVER_HOST }}:8080" >> $GITHUB_ENV
           docker build -t $DOCKER_USERNAME/frontend:latest ./proj/frontend
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          VITE_BACKEND_URL: ${{ secrets.SERVER_HOST }}:8080 
 
       - name: Build and tag backend image
         run: |
