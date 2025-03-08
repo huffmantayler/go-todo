@@ -33,7 +33,6 @@ export default function TodoList() {
   const getAllTodos = () => {
     axios.get(`${backendUrl}/getAllTodos`)
     .then(res => {
-        console.log(res.data)
        setTodos(res.data)
     })
     .catch(err => {
@@ -135,7 +134,7 @@ export default function TodoList() {
 
       {/* Todo Items */}
       <List sx={{ mt: 2, maxHeight: "70vh" }}>
-        {todos.map(todo => (
+        {todos && todos.map(todo => (
           <ListItem key={todo.id} sx={{ display: "flex", alignItems: "center" }}>
             {
             <div
