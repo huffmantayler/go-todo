@@ -34,11 +34,11 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOST: db
+      DB_HOST: postgresdb
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_NAME: todo
+      DB_NAME: todos
     ports:
       - "8080:8080"
     networks:
