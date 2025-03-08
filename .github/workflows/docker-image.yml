@@ -27,6 +27,7 @@ jobs:
           docker build -t $DOCKER_USERNAME/frontend:latest ./proj/frontend
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          VITE_BACKEND_URL: ${{ secrets.SERVER_HOST }}:8080 
 
       - name: Build and tag backend image
         run: |
