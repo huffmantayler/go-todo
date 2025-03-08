@@ -176,7 +176,7 @@ func closeDB() {
 
 func createTodo(title string) error {
 
-	query := `INSERT INTO todos (title) VALUES ($1) RETURNING id`
+	query := `INSERT INTO public.todos (title) VALUES ($1) RETURNING id`
 
 	var id int
 
@@ -199,10 +199,10 @@ func updateTodo(id int, doneStr string, title string) error {
 		if err != nil {
 			return fmt.Errorf("invalid 'done' parameter, must be a boolean")
 		}
-		query = `UPDATE todos SET done = $1 WHERE id = $2`
+		query = `UPDATE public.todos SET done = $1 WHERE id = $2`
 		_, err = pool.Exec(context.Background(), query, done, id)
 	} else if title != "" {
-		query = `UPDATE todos SET title = $1 WHERE id = $2`
+		query = `UPDATE public.todos SET title = $1 WHERE id = $2`
 		_, err = pool.Exec(context.Background(), query, title, id)
 	} else {
 		return fmt.Errorf("neither 'done' nor 'title' parameter provided")
@@ -218,7 +218,7 @@ func updateTodo(id int, doneStr string, title string) error {
 
 func deleteTodo(id int) error {
 
-	query := `DELETE FROM todos WHERE id = $1`
+	query := `DELETE FROM public.todos WHERE id = $1`
 
 	_, err := pool.Exec(context.Background(), query, id)
 	if err != nil {
@@ -233,7 +233,7 @@ func getAllTodos() ([]Todo, error) {
 
 	var todos []Todo
 
-	query := `SELECT id, title, done FROM todos`
+	query := `SELECT id, title, done FROM public.todos`
 
 	rows, err := pool.Query(context.Background(), query)
 	if err != nil {
