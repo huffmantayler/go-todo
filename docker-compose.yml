@@ -53,7 +53,7 @@ services:
       - db
       - backend
     ports:
-      - "5173:80"
+      - "5173:5173"
     networks:
       - app-network
 
