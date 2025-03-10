@@ -33,7 +33,7 @@ export default function TodoList() {
   const getAllTodos = () => {
     axios.get(`${backendUrl}/getAllTodos`)
     .then(res => {
-      console.log("Frontend Changes") 
+      console.log("Frontend Changes2") 
       setTodos(res.data)
     })
     .catch(err => {
