@@ -23,7 +23,10 @@ jobs:
       - name: Debug commit event
         run: |
           echo "Modified files: ${{ github.event.head_commit.modified }}"
-          echo "${{ github.event.commits }}"
+          for commit in "${{ github.event.commits }}" 
+          do
+              echo "Modified files in commit: $commit.modified"
+          done
 
   build-and-push-frontend:
     if: contains(github.event.head_commit.modified, 'proj/frontend/')
