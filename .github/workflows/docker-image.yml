@@ -20,16 +20,32 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Debug commit event
+      - name: Check for changes and set flags
         run: |
-          echo "Modified files: ${{ github.event.head_commit.modified }}"
-          for commit in "${{ github.event.commits }}" 
-          do
-              echo "Modified files in commit: $commit.modified"
+          CONTAINERS=("frontend" "backend" "nginx")
+          for container in "${CONTAINERS[@]}"; do
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+            echo "Changed files: $CHANGED_FILES"
+            
+            if [ "$container" == "nginx" ]; then
+              if echo "$CHANGED_FILES" | grep -q "proj/nginx.conf"; then
+                echo "NGINX_CHANGED=true" >> $GITHUB_ENV
+                echo "nginx changes detected"
+              else
+                echo "nginx changes not detected"
+              fi
+            else
+              if echo "$CHANGED_FILES" | grep -q "proj/$container/"; then
+                echo "${container^^}_CHANGED=true" >> $GITHUB_ENV
+                echo "$container changes detected"
+              else
+                echo "$container changes not detected"
+              fi
+            fi
           done
 
   build-and-push-frontend:
-    if: contains(github.event.head_commit.modified, 'proj/frontend/')
+    if: ${{ vars.FRONTEND_CHANGED }} == 'true'
     needs: [checkout, docker-login, check-docker-compose]
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +63,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
   build-and-push-backend:
-    if: contains(github.event.head_commit.modified, 'proj/backend/')
+    if: ${{ vars.BACKEND_CHANGED }} == 'true'
     needs: [checkout, docker-login, check-docker-compose]
     runs-on: ubuntu-latest
     steps:
@@ -64,7 +80,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   
   build-and-push-nginx:
-    if: contains(github.event.head_commit.modified, 'proj/nginx.conf')
+    if: ${{ vars.NGINX_CHANGED }} == 'true'
     needs: [checkout, docker-login, check-docker-compose]
     runs-on: ubuntu-latest
     steps:
