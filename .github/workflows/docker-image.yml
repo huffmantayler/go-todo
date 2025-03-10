@@ -24,7 +24,14 @@ jobs:
         run: |
           CONTAINERS=("frontend" "backend" "nginx")
           for container in "${CONTAINERS[@]}"; do
-            CHANGED_FILES=$(git diff --name-only $GITHUB_SHA^ $GITHUB_SHA)
+             # Check if the commit has a parent, otherwise fall back to using just $GITHUB_SHA
+            if git rev-parse --verify $GITHUB_SHA^ > /dev/null 2>&1; then
+              # If the parent exists, use $GITHUB_SHA^
+              CHANGED_FILES=$(git diff --name-only $GITHUB_SHA^ $GITHUB_SHA)
+            else
+              # Otherwise, compare with the initial commit or nothing if there is no previous commit
+              CHANGED_FILES=$(git diff --name-only $GITHUB_SHA)
+            fi
             echo "Changed files: $CHANGED_FILES"
             
             if [ "$container" == "nginx" ]; then
