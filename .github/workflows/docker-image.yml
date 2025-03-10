@@ -24,7 +24,7 @@ jobs:
         run: |
           CONTAINERS=("frontend" "backend" "nginx")
           for container in "${CONTAINERS[@]}"; do
-            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+            CHANGED_FILES=$(git diff --name-only $GITHUB_SHA^ $GITHUB_SHA)
             echo "Changed files: $CHANGED_FILES"
             
             if [ "$container" == "nginx" ]; then
