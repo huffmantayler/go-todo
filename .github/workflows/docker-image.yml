@@ -58,6 +58,7 @@ jobs:
     steps:
       - name: Build and tag frontend image
         run: |
+          ls -la ./proj/
           echo "FRONTEND_CHANGED=true" >> $GITHUB_ENV
           echo "VITE_BACKEND_URL=http://${{ secrets.SERVER_HOST }}:8080" >> $GITHUB_ENV
           docker build -t $DOCKER_USERNAME/frontend:latest ./proj/frontend
